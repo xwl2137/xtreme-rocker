@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="pl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusGraphics // Zaawansowane Centrum Grafiki Komputerowej</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            900: '#0a0b10',
+                            800: '#121420',
+                            700: '#1b1e2e',
+                            600: '#262b44',
+                            500: '#39416b',
+                            accent: '#00f0ff',
+                            purple: '#b000ff',
+                            pink: '#ff007f',
+                            green: '#00ff66'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    boxShadow: {
+                        'neon-cyan': '0 0 20px rgba(0, 240, 255, 0.4)',
+                        'neon-purple': '0 0 20px rgba(176, 0, 255, 0.4)',
+                        'neon-pink': '0 0 20px rgba(255, 0, 127, 0.4)'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom styling tweaks -->
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0b10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #262b44;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+        .glass-panel {
+            background: rgba(18, 20, 32, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+        }
+        .text-glow-pink {
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-cyber-900 text-gray-100 font-sans antialiased selection:bg-cyber-accent selection:text-cyber-900 overflow-x-hidden">
+
+    <nav class="fixed top-0 left-0 w-full z-50 glass-panel border-b border-cyber-500/20 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyber-accent to-cyber-purple flex items-center justify-center shadow-neon-cyan">
+                    <i class="fa-solid fa-cube text-cyber-900 text-xl font-bold"></i>
+                </div>
+                <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-cyber-accent via-white to-cyber-pink bg-clip-text text-transparent">NEXUS<span class="text-cyber-accent">.GFX</span></span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8 font-medium text-sm">
+                <a href="#hero" class="hover:text-cyber-accent transition-colors">Start</a>
+                <a href="#domains" class="hover:text-cyber-accent transition-colors">Obszary</a>
+                <a href="#sandbox" class="hover:text-cyber-accent transition-colors">Plac Zabaw & Shaders</a>
+                <a href="#gallery" class="hover:text-cyber-accent transition-colors">Galeria</a>
+                <a href="#timeline" class="hover:text-cyber-accent transition-colors">Ewolucja</a>
+                <a href="#contact" class="hover:text-cyber-accent transition-colors">Kontakt</a>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#sandbox" class="px-5 py-2.5 rounded-xl bg-cyber-accent/10 border border-cyber-accent text-cyber-accent hover:bg-cyber-accent hover:text-cyber-900 font-semibold transition-all duration-300 shadow-neon-cyan text-sm">
+                    Otwórz Narzędzia
+                </a>
+            </div>
+
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-cyber-accent focus:outline-none text-xl p-2">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-b border-cyber-500/20 px-6 py-4 flex flex-col space-y-4">
+            <a href="#hero" class="mobile-link hover:text-cyber-accent transition-colors">Start</a>
+            <a href="#domains" class="mobile-link hover:text-cyber-accent transition-colors">Obszary</a>
+            <a href="#sandbox" class="mobile-link hover:text-cyber-accent transition-colors">Plac Zabaw & Shaders</a>
+            <a href="#gallery" class="mobile-link hover:text-cyber-accent transition-colors">Galeria</a>
+            <a href="#timeline" class="mobile-link hover:text-cyber-accent transition-colors">Ewolucja</a>
+            <a href="#contact" class="mobile-link hover:text-cyber-accent transition-colors">Kontakt</a>
+            <a href="#sandbox" class="mobile-link text-center w-full py-2.5 rounded-xl bg-cyber-accent text-cyber-900 font-semibold shadow-neon-cyan">Otwórz Narzędzia</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Interactive Canvas Background -->
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-60"></canvas>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyber-900/80 to-cyber-900 z-1 pointer-events-none"></div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 text-center py-20">
+            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-panel border border-cyber-accent/30 text-cyber-accent text-xs md:text-sm font-mono mb-6 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-cyber-accent"></span>
+                <span>Next-Gen Computer Graphics Platform v3.4</span>
+            </div>
+            
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                Projektuj Przyszłość w <span class="bg-gradient-to-r from-cyber-accent via-cyber-purple to-cyber-pink bg-clip-text text-transparent text-glow">Wymiarze Cyfrowym</span>
+            </h1>
+            
+            <p class="text-base sm:text-xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed">
+                Poznaj potęgę zaawansowanego modelowania 3D, ray tracingu w czasie rzeczywistym, generatywnych shaderów i nowoczesnego designu UI/UX na jednej platformie.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#sandbox" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyber-accent to-blue-500 text-cyber-900 font-bold hover:shadow-neon-cyan transition-all duration-300 flex items-center justify-center space-x-3">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Uruchom Shader Playground</span>
+                </a>
+                <a href="#domains" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel border border-gray-600 hover:border-cyber-accent text-gray-200 hover:text-cyber-accent font-semibold transition-all duration-300 flex items-center justify-center space-x-3">
+                    <i class="fa-solid fa-compass"></i>
+                    <span>Odkryj Kategorie</span>
+                </a>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 max-w-4xl mx-auto">
+                <div class="glass-panel p-6 rounded-2xl border border-cyber-500/20 text-center">
+                    <div class="text-3xl font-extrabold text-cyber-accent mb-1 font-mono">10M+</div>
+                    <div class="text-xs text-gray-400">Wykresów Poligonowych</div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl border border-cyber-500/20 text-center">
+                    <div class="text-3xl font-extrabold text-cyber-purple mb-1 font-mono">60 FPS</div>
+                    <div class="text-xs text-gray-400">Płynny Realtime Render</div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl border border-cyber-500/20 text-center">
+                    <div class="text-3xl font-extrabold text-cyber-pink mb-1 font-mono">PBR</div>
+                    <div class="text-xs text-gray-400">Fizyczny Model Cieniowania</div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl border border-cyber-500/20 text-center">
+                    <div class="text-3xl font-extrabold text-cyber-green mb-1 font-mono">100%</div>
+                    <div class="text-xs text-gray-400">Interaktywność Web</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="domains" class="py-24 relative bg-cyber-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-mono tracking-widest text-cyber-accent uppercase mb-3">Obszary Ekspertyzy</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold mb-4">Kategorie Grafiki Komputerowej</p>
+                <p class="text-gray-400">Zrozumienie fundamentów cyfrowej kreacji – od wektorów po zaawansowaną symulację fizyczną światła.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-panel p-8 rounded-2xl border border-cyber-500/20 hover:border-cyber-accent/60 transition-all duration-300 group hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-xl bg-cyber-accent/10 border border-cyber-accent/30 flex items-center justify-center text-cyber-accent text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shapes"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyber-accent transition-colors">Modelowanie & Sceny 3D</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Tworzenie obiektów trójwymiarowych opartych na siatkach wielokątnych, krzywych NURBS oraz rzeźbieniu cyfrowym (digital sculpting) z użyciem topologii.
+                    </p>
+                    <ul class="space-y-2 text-xs font-mono text-gray-300 border-t border-gray-700/50 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-accent mr-2"></i> Poly-modeling & SubD</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-accent mr-2"></i> Retopologia & UV Unwrapping</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-accent mr-2"></i> Procedural Generation</li>
+                    </ul>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-panel p-8 rounded-2xl border border-cyber-500/20 hover:border-cyber-purple/60 transition-all duration-300 group hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-xl bg-cyber-purple/10 border border-cyber-purple/30 flex items-center justify-center text-cyber-purple text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-paintbrush"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyber-purple transition-colors">Grafika Rastrowa i Cyfrowy Malunek</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Praca z matrycami pikseli, manipulacja obrazem fotograficznym, cyfrowe malowanie tabletowe oraz zaawansowane korekcje barwne (Color Grading).
+                    </p>
+                    <ul class="space-y-2 text-xs font-mono text-gray-300 border-t border-gray-700/50 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-purple mr-2"></i> Maskowanie i Warstwy</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-purple mr-2"></i> Przestrzenie Barw (sRGB, AdobeRGB, CMYK)</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-purple mr-2"></i> Matte Painting & Concept Art</li>
+                    </ul>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-panel p-8 rounded-2xl border border-cyber-500/20 hover:border-cyber-pink/60 transition-all duration-300 group hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-xl bg-cyber-pink/10 border border-cyber-pink/30 flex items-center justify-center text-cyber-pink text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyber-pink transition-colors">Grafika Wektorowa & UI/UX</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Skalowalna matematycznie grafika oparta na krzywych Béziera. Kluczowa dla identyfikacji wizualnej, typografii, logotypów oraz interfejsów aplikacji.
+                    </p>
+                    <ul class="space-y-2 text-xs font-mono text-gray-300 border-t border-gray-700/50 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-pink mr-2"></i> Krzywe Béziera & Ścieżki</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-pink mr-2"></i> Systemy Siatek i Design Tokens</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-pink mr-2"></i> Responsywne Układy</li>
+                    </ul>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="glass-panel p-8 rounded-2xl border border-cyber-500/20 hover:border-cyber-green/60 transition-all duration-300 group hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-xl bg-cyber-green/10 border border-cyber-green/30 flex items-center justify-center text-cyber-green text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white group-hover:text-cyber-green transition-colors">VFX & Motion Design</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Efekty wizualne w filmach i grach, symulacje fizyczne płynów, cząsteczek oraz dynamiczna animacja ruchoma grafik i typografii (Kinetic Typography).
+                    </p>
+                    <ul class="space-y-2 text-xs font-mono text-gray-300 border-t border-gray-700/50 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-green mr-2"></i> Symulacje Pyro & Flip Fluids</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-green mr-2"></i> Matchmoving & Tracking</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-cyber-green mr-2"></i> Keyframe Interpolation</li>
+                    </ul>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="glass-panel p-8 rounded-2xl border border-cyber-500/20 hover:border-blue-400/60 transition-all duration-300 group hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">Ray Tracing & Shading</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Algorytmy symulacji ścieżek promieni światła, odbić, refrakcji, okluzji otoczenia oraz pisanie niestandardowych programów cieniujących (HLSL/GLSL).
+                    </p>
+                    <ul class="space-y-2 text-xs font-mono text-gray-300 border-t border-gray-700/50 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-blue-400 mr-2"></i> Path Tracing & Denoising</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-blue-400 mr-2"></i> PBR (Physically Based Rendering)</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-blue-400 mr-2"></i> Vertex & Fragment Shaders</li>
+                    </ul>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="glass-panel p-8 rounded-2xl border border-cyber-500/20 hover:border-yellow-400/60 transition-all duration-300 group hover:-translate-y-1">
+                    <div class="w-14 h-14 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white group-hover:text-yellow-400 transition-colors">AI & Generative Graphics</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Wykorzystanie sieci neuronowych, modeli dyfuzyjnych oraz uczenia maszynowego do wspomagania procesu twórczego, teksturowania i upscale'owania.
+                    </p>
+                    <ul class="space-y-2 text-xs font-mono text-gray-300 border-t border-gray-700/50 pt-4">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-yellow-400 mr-2"></i> Latent Diffusion Models</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-yellow-400 mr-2"></i> AI Inpainting & Outpainting</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-yellow-400 mr-2"></i> Neural Style Transfer</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sandbox" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-mono tracking-widest text-cyber-accent uppercase mb-3">Interaktywny Plac Zabaw</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold mb-4">Narzędzia Graficzne Online</p>
+                <p class="text-gray-400">Przetestuj algorytmy cieniowania, wygeneruj profesjonalną paletę kolorów lub sprawdź swoją percepcję barw.</p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10">
+                <button onclick="switchTab('shader')" id="btn-shader" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 bg-cyber-accent text-cyber-900 shadow-neon-cyan flex items-center space-x-2">
+                    <i class="fa-solid fa-cube"></i>
+                    <span>Shader Playground</span>
+                </button>
+                <button onclick="switchTab('palette')" id="btn-palette" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 glass-panel text-gray-300 hover:text-white border border-cyber-500/20 flex items-center space-x-2">
+                    <i class="fa-solid fa-palette"></i>
+                    <span>Generator Palet UI</span>
+                </button>
+                <button onclick="switchTab('perception')" id="btn-perception" class="tab-btn px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 glass-panel text-gray-300 hover:text-white border border-cyber-500/20 flex items-center space-x-2">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>Test Percepcji Barw</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: SHADER PLAYGROUND -->
+            <div id="tab-shader" class="tab-content glass-panel p-6 sm:p-8 rounded-3xl border border-cyber-500/30">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- Canvas Preview -->
+                    <div class="lg:col-span-7 flex flex-col items-center">
+                        <div class="w-full aspect-square max-w-[500px] rounded-2xl overflow-hidden border border-cyber-accent/40 bg-cyber-900 shadow-neon-cyan relative flex items-center justify-center">
+                            <canvas id="shader-canvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+                            <div class="absolute bottom-4 left-4 glass-panel px-3 py-1.5 rounded-lg text-xs font-mono text-cyber-accent flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-cyber-accent animate-ping"></span>
+                                <span id="fps-counter">FPS: 60</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-4 text-center font-mono"><i class="fa-solid fa-circle-info mr-1 text-cyber-accent"></i> Przeciągnij myszą po płótnie, aby obracać model 3D w czasie rzeczywistym.</p>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <h3 class="text-xl font-bold text-white flex items-center justify-between">
+                            <span>Parametry PBR Shadera</span>
+                            <span class="text-xs font-mono text-cyber-accent px-2.5 py-1 rounded-md bg-cyber-accent/10 border border-cyber-accent/30">GLSL Simulation</span>
+                        </h3>
+
+                        <!-- Shape Selector -->
+                        <div>
+                            <label class="block text-xs font-mono text-gray-300 mb-2">Geometria Obiektu</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="setShape('cube')" id="shape-cube" class="py-2.5 px-3 rounded-lg text-xs font-semibold bg-cyber-accent text-cyber-900 transition-all">Sześcian</button>
+                                <button onclick="setShape('sphere')" id="shape-sphere" class="py-2.5 px-3 rounded-lg text-xs font-semibold glass-panel text-gray-300 hover:text-white transition-all">Kula</button>
+                                <button onclick="setShape('torus')" id="shape-torus" class="py-2.5 px-3 rounded-lg text-xs font-semibold glass-panel text-gray-300 hover:text-white transition-all">Torus</button>
+                            </div>
+                        </div>
+
+                        <!-- Color Base -->
+                        <div>
+                            <div class="flex justify-between text-xs font-mono text-gray-300 mb-2">
+                                <span>Kolor Podstawowy (Albedo)</span>
+                                <span id="val-color" class="text-cyber-accent font-bold">#00f0ff</span>
+                            </div>
+                            <input type="color" id="input-color" value="#00f0ff" class="w-full h-10 rounded-xl bg-cyber-900 border border-cyber-500/30 cursor-pointer p-1">
+                        </div>
+
+                        <!-- Roughness Slider -->
+                        <div>
+                            <div class="flex justify-between text-xs font-mono text-gray-300 mb-2">
+                                <span>Chropowatość (Roughness)</span>
+                                <span id="val-roughness" class="text-cyber-accent">0.30</span>
+                            </div>
+                            <input type="range" id="input-roughness" min="0" max="1" step="0.01" value="0.3" class="w-full accent-cyber-accent bg-cyber-900 h-2 rounded-lg cursor-pointer">
+                        </div>
+
+                        <!-- Metalness Slider -->
+                        <div>
+                            <div class="flex justify-between text-xs font-mono text-gray-300 mb-2">
+                                <span>Metaliczność (Metalness)</span>
+                                <span id="val-metalness" class="text-cyber-accent">0.80</span>
+                            </div>
+                            <input type="range" id="input-metalness" min="0" max="1" step="0.01" value="0.8" class="w-full accent-cyber-accent bg-cyber-900 h-2 rounded-lg cursor-pointer">
+                        </div>
+
+                        <!-- Fresnel / Glow Intensity -->
+                        <div>
+                            <div class="flex justify-between text-xs font-mono text-gray-300 mb-2">
+                                <span>Efekt Fresnel / Odbicie Krawędziowe</span>
+                                <span id="val-fresnel" class="text-cyber-accent">0.50</span>
+                            </div>
+                            <input type="range" id="input-fresnel" min="0" max="1" step="0.01" value="0.5" class="w-full accent-cyber-accent bg-cyber-900 h-2 rounded-lg cursor-pointer">
+                        </div>
+
+                        <button onclick="resetShaderDefaults()" class="w-full py-3 rounded-xl border border-gray-600 hover:border-cyber-accent text-gray-300 hover:text-cyber-accent text-xs font-mono font-semibold transition-all">
+                            Resetuj Parametry
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: PALETTE GENERATOR -->
+            <div id="tab-palette" class="tab-content hidden glass-panel p-6 sm:p-10 rounded-3xl border border-cyber-500/30">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h3 class="text-2xl font-bold mb-4">Generator Harmonii Kolorów</h3>
+                    <p class="text-gray-400 text-sm mb-8">Kliknij przycisk generowania, aby stworzyć zbalansowaną, profesjonalną paletę kolorów opartą na teoriach barw (komplementarnych, analogicznych i tryadycznych).</p>
+                    
+                    <button onclick="generateNewPalette()" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyber-purple to-cyber-pink text-white font-bold hover:shadow-neon-purple transition-all duration-300 mb-10">
+                        <i class="fa-solid fa-shuffle mr-2"></i> Generuj Nową Paletę
+                    </button>
+
+                    <div id="palette-container" class="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-8">
+                        <!-- Generated palette boxes populated via JS -->
+                    </div>
+
+                    <div id="copy-notification" class="hidden text-xs font-mono text-cyber-green mt-2 animate-bounce">
+                        <i class="fa-solid fa-check-circle mr-1"></i> Skopiowano kod koloru do schowka!
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: PERCEPTION TEST -->
+            <div id="tab-perception" class="tab-content hidden glass-panel p-6 sm:p-10 rounded-3xl border border-cyber-500/30">
+                <div class="max-w-2xl mx-auto text-center">
+                    <h3 class="text-2xl font-bold mb-4">Test Percepcji Barw & Iluzje Optyczne</h3>
+                    <p class="text-gray-400 text-sm mb-8">Graficy komputerowi pracują z ludzką percepcją wzrokową. Sprawdź, czy potrafisz odnaleźć odmienny odcień na poniższej siatce.</p>
+                    
+                    <div class="mb-6 flex justify-between items-center px-4 font-mono text-sm">
+                        <span>Wynik: <strong id="perception-score" class="text-cyber-accent">0</strong></span>
+                        <span>Czas: <strong id="perception-timer" class="text-cyber-pink">15</strong>s</span>
+                    </div>
+
+                    <div id="perception-board" class="grid grid-cols-4 gap-3 max-w-[360px] mx-auto mb-8 aspect-square p-4 glass-panel rounded-2xl border border-cyber-500/30">
+                        <!-- Dynamic tiles -->
+                    </div>
+
+                    <button id="start-perception-btn" onclick="startPerceptionGame()" class="px-8 py-3.5 rounded-xl bg-cyber-accent text-cyber-900 font-bold hover:shadow-neon-cyan transition-all duration-300">
+                        Rozpocznij Test
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-24 relative bg-cyber-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-mono tracking-widest text-cyber-accent uppercase mb-3">Portfolio & Showcase</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold mb-4">Galeria Inspiracji Cyfrowych</p>
+                <p class="text-gray-400">Wyselekcjonowane realizacje prezentujące możliwości współczesnego silnika renderującego i digital artu.</p>
+            </div>
+
+            <!-- Filter buttons -->
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-12">
+                <button onclick="filterGallery('all')" class="gallery-filter-btn px-5 py-2 rounded-xl text-xs font-mono uppercase bg-cyber-accent text-cyber-900 font-bold transition-all">Wszystko</button>
+                <button onclick="filterGallery('3d')" class="gallery-filter-btn px-5 py-2 rounded-xl text-xs font-mono uppercase glass-panel text-gray-300 hover:text-white transition-all">3D Model</button>
+                <button onclick="filterGallery('vfx')" class="gallery-filter-btn px-5 py-2 rounded-xl text-xs font-mono uppercase glass-panel text-gray-300 hover:text-white transition-all">VFX / Cyber</button>
+                <button onclick="filterGallery('ui')" class="gallery-filter-btn px-5 py-2 rounded-xl text-xs font-mono uppercase glass-panel text-gray-300 hover:text-white transition-all">UI / Abstract</button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="gallery-grid">
+                <!-- Item 1 -->
+                <div class="gallery-item group relative overflow-hidden rounded-2xl glass-panel border border-cyber-500/20 aspect-[4/3] cursor-pointer" data-category="3d" onclick="openLightbox('Cybernetic Android', 'https://placehold.co/800x600/121420/00f0ff?text=Cybernetic+Android', 'Model wielokątny z zaawansowaną topologią PBR i mapowaniem displacemetu.')">
+                    <img src="https://placehold.co/600x450/121420/00f0ff?text=Cybernetic+Android" alt="3D Model" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x450/121420/00f0ff?text=Fallback+Image'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cyber-900 via-cyber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-xs font-mono text-cyber-accent uppercase mb-1">Modelowanie 3D</span>
+                        <h4 class="text-lg font-bold text-white mb-1">Cybernetic Android</h4>
+                        <p class="text-xs text-gray-300">Kliknij, aby wyświetlić szczegóły projektu.</p>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="gallery-item group relative overflow-hidden rounded-2xl glass-panel border border-cyber-500/20 aspect-[4/3] cursor-pointer" data-category="vfx" onclick="openLightbox('Neon Cityscape', 'https://placehold.co/800x600/121420/b000ff?text=Neon+Cityscape', 'Scena nocna z wolumetrycznym oświetleniem, mgłą oraz śledzeniem promieni światła.')">
+                    <img src="https://placehold.co/600x450/121420/b000ff?text=Neon+Cityscape" alt="VFX" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x450/121420/b000ff?text=Fallback+Image'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cyber-900 via-cyber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-xs font-mono text-cyber-purple uppercase mb-1">VFX & Shading</span>
+                        <h4 class="text-lg font-bold text-white mb-1">Neon Cityscape</h4>
+                        <p class="text-xs text-gray-300">Kliknij, aby wyświetlić szczegóły projektu.</p>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="gallery-item group relative overflow-hidden rounded-2xl glass-panel border border-cyber-500/20 aspect-[4/3] cursor-pointer" data-category="ui" onclick="openLightbox('Quantum Dashboard UI', 'https://placehold.co/800x600/121420/ff007f?text=Quantum+Dashboard', 'Interfejs użytkownika oparty na siatce modulowanej i glassmorphismie.')">
+                    <img src="https://placehold.co/600x450/121420/ff007f?text=Quantum+Dashboard" alt="UI Design" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x450/121420/ff007f?text=Fallback+Image'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cyber-900 via-cyber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-xs font-mono text-cyber-pink uppercase mb-1">UI / UX Design</span>
+                        <h4 class="text-lg font-bold text-white mb-1">Quantum Dashboard UI</h4>
+                        <p class="text-xs text-gray-300">Kliknij, aby wyświetlić szczegóły projektu.</p>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="gallery-item group relative overflow-hidden rounded-2xl glass-panel border border-cyber-500/20 aspect-[4/3] cursor-pointer" data-category="3d" onclick="openLightbox('Biomorphic Sculpture', 'https://placehold.co/800x600/121420/00ff66?text=Biomorphic+Sculpture', 'Proceduralna rzeźba organiczna wygenerowana za pomocą algorytmów SDF.')">
+                    <img src="https://placehold.co/600x450/121420/00ff66?text=Biomorphic+Sculpture" alt="3D Model" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x450/121420/00ff66?text=Fallback+Image'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cyber-900 via-cyber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-xs font-mono text-cyber-green uppercase mb-1">Modelowanie 3D</span>
+                        <h4 class="text-lg font-bold text-white mb-1">Biomorphic Sculpture</h4>
+                        <p class="text-xs text-gray-300">Kliknij, aby wyświetlić szczegóły projektu.</p>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="gallery-item group relative overflow-hidden rounded-2xl glass-panel border border-cyber-500/20 aspect-[4/3] cursor-pointer" data-category="vfx" onclick="openLightbox('Particle Vortex', 'https://placehold.co/800x600/121420/39416b?text=Particle+Vortex', 'Symulacja 100 000 cząsteczek sterowanych wektorowym polem siłowym.')">
+                    <img src="https://placehold.co/600x450/121420/39416b?text=Particle+Vortex" alt="VFX" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x450/121420/39416b?text=Fallback+Image'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cyber-900 via-cyber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-xs font-mono text-blue-400 uppercase mb-1">VFX & Shading</span>
+                        <h4 class="text-lg font-bold text-white mb-1">Particle Vortex</h4>
+                        <p class="text-xs text-gray-300">Kliknij, aby wyświetlić szczegóły projektu.</p>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="gallery-item group relative overflow-hidden rounded-2xl glass-panel border border-cyber-500/20 aspect-[4/3] cursor-pointer" data-category="ui" onclick="openLightbox('Abstract Vectors', 'https://placehold.co/800x600/121420/f59e0b?text=Abstract+Vectors', 'Kompozycja wektorowa oparta na precyzyjnych krzywych matematycznych.')">
+                    <img src="https://placehold.co/600x450/121420/f59e0b?text=Abstract+Vectors" alt="UI Design" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x450/121420/f59e0b?text=Fallback+Image'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cyber-900 via-cyber-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                        <span class="text-xs font-mono text-yellow-400 uppercase mb-1">UI / Abstract</span>
+                        <h4 class="text-lg font-bold text-white mb-1">Abstract Vectors</h4>
+                        <p class="text-xs text-gray-300">Kliknij, aby wyświetlić szczegóły projektu.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="py-24 relative">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-mono tracking-widest text-cyber-accent uppercase mb-3">Historia & Przyszłość</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold mb-4">Oś Czasu Technologii Graficznych</p>
+                <p class="text-gray-400">Kamienie milowe w ewolucji renderingu i komputerowej grafiki wizualnej.</p>
+            </div>
+
+            <div class="relative border-l border-cyber-accent/30 ml-4 sm:ml-32 space-y-12">
+                <!-- Timeline Item 1 -->
+                <div class="relative pl-8 sm:pl-12">
+                    <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-cyber-900 border-2 border-cyber-accent flex items-center justify-center text-cyber-accent text-xs font-mono shadow-neon-cyan">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <span class="text-xs font-mono text-cyber-accent">1960 - 1980</span>
+                    <h3 class="text-xl font-bold text-white mt-1 mb-2">Początki Grafiki Wektoryzowanej i Rasteryzacji</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Pojawienie się systemów CAD, algorytmów Bresenhama oraz pierwszych framebufferów zdolnych do wyświetlania prostych kształtów rastrowych w rozdzielczościach monochromatycznych.
+                    </p>
+                </div>
+
+                <!-- Timeline Item 2 -->
+                <div class="relative pl-8 sm:pl-12">
+                    <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-cyber-900 border-2 border-cyber-purple flex items-center justify-center text-cyber-purple text-xs font-mono shadow-neon-purple">
+                        <i class="fa-solid fa-cube"></i>
+                    </div>
+                    <span class="text-xs font-mono text-cyber-purple">1990 - 2000</span>
+                    <h3 class="text-xl font-bold text-white mt-1 mb-2">Rewolucja 3D w Czasie Rzeczywistym (Akceleratory GPU)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Wprowadzenie pierwszych akceleratorów graficznych 3D dla komputerów osobistych (karty graficzne z procesorami potoków geometrii i teksturowania). Rozkwit gier wideo w pełnym 3D.
+                    </p>
+                </div>
+
+                <!-- Timeline Item 3 -->
+                <div class="relative pl-8 sm:pl-12">
+                    <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-cyber-900 border-2 border-cyber-pink flex items-center justify-center text-cyber-pink text-xs font-mono shadow-neon-pink">
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+                    <span class="text-xs font-mono text-cyber-pink">2010 - 2020</span>
+                    <h3 class="text-xl font-bold text-white mt-1 mb-2">Fizyczny Model Cieniowania (PBR) & Global Illumination</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Standardyzacja fizycznego modelu cieniowania (PBR), zaawansowane mapowanie wypukłości oraz wejście silników takich jak Unreal Engine i Blender na poziom produkcji kinowej.
+                    </p>
+                </div>
+
+                <!-- Timeline Item 4 -->
+                <div class="relative pl-8 sm:pl-12">
+                    <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-cyber-900 border-2 border-cyber-green flex items-center justify-center text-cyber-green text-xs font-mono">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <span class="text-xs font-mono text-cyber-green">2020+ Teraźniejszość i Przyszłość</span>
+                    <h3 class="text-xl font-bold text-white mt-1 mb-2">Ray Tracing RT Cores & Generative AI Rendering</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Sprzętowe śledzenie promieni w czasie rzeczywistym, techniki rekonstrukcji obrazu wspierane przez sztuczną inteligencję (DLSS/FSR) oraz generatywna grafika AI wspomagająca artystów.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-24 relative bg-cyber-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-xs font-mono tracking-widest text-cyber-accent uppercase mb-3">Dołącz do Społeczności</h2>
+                    <p class="text-3xl sm:text-4xl font-extrabold mb-4">Masz Pytanie lub Projekt?</p>
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        Skontaktuj się z naszym zespołem ekspertów grafiki komputerowej lub zapisz się do biuletynu, aby otrzymywać najnowsze tutoriale shaderów i assety 3D prosto do skrzynki.
+                    </p>
+                    
+                    <div class="space-y-4 font-mono text-sm text-gray-300">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-xl glass-panel border border-cyber-accent/30 flex items-center justify-center text-cyber-accent">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <span>kontakt@nexusgraphics.io</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 rounded-xl glass-panel border border-cyber-purple/30 flex items-center justify-center text-cyber-purple">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <span>Cyber Space Station // Sector 7G</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-3xl border border-cyber-500/30">
+                    <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                        <div>
+                            <label class="block text-xs font-mono text-gray-300 mb-2">Twoje Imię</label>
+                            <input type="text" id="form-name" required class="w-full px-4 py-3 rounded-xl bg-cyber-900 border border-cyber-500/30 text-white focus:outline-none focus:border-cyber-accent transition-colors" placeholder="Jan Kowalski">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-gray-300 mb-2">Adres Email</label>
+                            <input type="email" id="form-email" required class="w-full px-4 py-3 rounded-xl bg-cyber-900 border border-cyber-500/30 text-white focus:outline-none focus:border-cyber-accent transition-colors" placeholder="jan@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-gray-300 mb-2">Wiadomość / Zapytanie</label>
+                            <textarea id="form-msg" rows="4" required class="w-full px-4 py-3 rounded-xl bg-cyber-900 border border-cyber-500/30 text-white focus:outline-none focus:border-cyber-accent transition-colors" placeholder="Opisz swój projekt graficzny..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyber-accent to-blue-500 text-cyber-900 font-bold hover:shadow-neon-cyan transition-all duration-300">
+                            Wyślij Wiadomość
+                        </button>
+                    </form>
+                    <div id="form-success" class="hidden mt-4 p-4 rounded-xl bg-cyber-green/10 border border-cyber-green text-cyber-green text-xs font-mono text-center">
+                        <i class="fa-solid fa-check-circle mr-2"></i> Wiadomość została wysłana pomyślnie! Odpowiadamy w 24h.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-cyber-500/20 bg-cyber-900 text-center text-xs font-mono text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-cyber-accent flex items-center justify-center text-cyber-900 font-bold">
+                    <i class="fa-solid fa-cube"></i>
+                </div>
+                <span class="font-extrabold text-white tracking-wider">NEXUS<span class="text-cyber-accent">.GFX</span></span>
+            </div>
+            <div>
+                &copy; 2026 NexusGraphics Hub. Wszystkie prawa zastrzeżone. Zaprojektowano w nowoczesnym stylu Cyberpunk.
+            </div>
+            <div class="flex space-x-4 text-lg">
+                <a href="#" class="hover:text-cyber-accent transition-colors"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="hover:text-cyber-accent transition-colors"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" class="hover:text-cyber-accent transition-colors"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="lightbox" class="fixed inset-0 z-50 hidden bg-cyber-900/90 backdrop-blur-md flex items-center justify-center p-4" onclick="closeLightbox()">
+        <div class="glass-panel max-w-2xl w-full p-6 rounded-3xl border border-cyber-accent/40 relative" onclick="event.stopPropagation()">
+            <button onclick="closeLightbox()" class="absolute top-4 right-4 w-10 h-10 rounded-xl bg-cyber-800 border border-cyber-500/30 text-white flex items-center justify-center hover:text-cyber-accent transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <img id="lightbox-img" src="" alt="Preview" class="w-full aspect-[4/3] object-cover rounded-2xl mb-6 border border-cyber-500/20" onerror="this.src='https://placehold.co/800x600/121420/00f0ff?text=Fallback+Image'">
+            <h3 id="lightbox-title" class="text-2xl font-bold mb-2 text-white"></h3>
+            <p id="lightbox-desc" class="text-gray-300 text-sm leading-relaxed"></p>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Hero Background Canvas (Matrix / Particle Mesh)
+        const heroCanvas = document.getElementById('hero-canvas');
+        const heroCtx = heroCanvas.getContext('2d');
+        let heroWidth, heroHeight;
+        let particles = [];
+
+        function resizeHeroCanvas() {
+            heroWidth = heroCanvas.width = heroCanvas.offsetWidth;
+            heroHeight = heroCanvas.height = heroCanvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeHeroCanvas);
+        resizeHeroCanvas();
+
+        for (let i = 0; i < 60; i++) {
+            particles.push({
+                x: Math.random() * heroWidth,
+                y: Math.random() * heroHeight,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5,
+                radius: Math.random() * 2 + 1
+            });
+        }
+
+        let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateHero() {
+            heroCtx.clearRect(0, 0, heroWidth, heroHeight);
+            heroCtx.fillStyle = 'rgba(0, 240, 255, 0.4)';
+            heroCtx.strokeStyle = 'rgba(0, 240, 255, 0.1)';
+
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > heroWidth) p.vx *= -1;
+                if (p.y < 0 || p.y > heroHeight) p.vy *= -1;
+
+                heroCtx.beginPath();
+                heroCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                heroCtx.fill();
+
+                // Connect nearby particles
+                for (let j = i + 1; j < particles.length; j++) {
+                    let p2 = particles[j];
+                    let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                    if (dist < 120) {
+                        heroCtx.lineWidth = 1 - (dist / 120);
+                        heroCtx.beginPath();
+                        heroCtx.moveTo(p.x, p.y);
+                        heroCtx.lineTo(p2.x, p2.y);
+                        heroCtx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateHero);
+        }
+        animateHero();
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-cyber-accent', 'text-cyber-900', 'shadow-neon-cyan');
+                el.classList.add('glass-panel', 'text-gray-300');
+            });
+
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('glass-panel', 'text-gray-300');
+            activeBtn.classList.add('bg-cyber-accent', 'text-cyber-900', 'shadow-neon-cyan');
+        }
+
+        // TAB 1: Shader Playground (Canvas 3D simulated rendering)
+        const shaderCanvas = document.getElementById('shader-canvas');
+        const shaderCtx = shaderCanvas.getContext('2d');
+        let currentShape = 'cube';
+        let rotX = 0.5, rotY = 0.5;
+        let isDragging = false;
+        let lastMouseX = 0, lastMouseY = 0;
+        let frameCount = 0;
+        let lastFpsUpdate = performance.now();
+
+        function resizeShaderCanvas() {
+            shaderCanvas.width = shaderCanvas.offsetWidth;
+            shaderCanvas.height = shaderCanvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeShaderCanvas);
+        resizeShaderCanvas();
+
+        shaderCanvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+        window.addEventListener('mouseup', () => isDragging = false);
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            let dx = e.clientX - lastMouseX;
+            let dy = e.clientY - lastMouseY;
+            rotY += dx * 0.01;
+            rotX += dy * 0.01;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+
+        // Touch support for canvas
+        shaderCanvas.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            lastMouseX = e.touches[0].clientX;
+            lastMouseY = e.touches[0].clientY;
+        });
+        window.addEventListener('touchend', () => isDragging = false);
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            let dx = e.touches[0].clientX - lastMouseX;
+            let dy = e.touches[0].clientY - lastMouseY;
+            rotY += dx * 0.01;
+            rotX += dy * 0.01;
+            lastMouseX = e.touches[0].clientX;
+            lastMouseY = e.touches[0].clientY;
+        });
+
+        function setShape(shape) {
+            currentShape = shape;
+            ['cube', 'sphere', 'torus'].forEach(s => {
+                const btn = document.getElementById('shape-' + s);
+                if (s === shape) {
+                    btn.className = 'py-2.5 px-3 rounded-lg text-xs font-semibold bg-cyber-accent text-cyber-900 transition-all';
+                } else {
+                    btn.className = 'py-2.5 px-3 rounded-lg text-xs font-semibold glass-panel text-gray-300 hover:text-white transition-all';
+                }
+            });
+        }
+
+        // Sliders binding
+        const inputColor = document.getElementById('input-color');
+        const valColor = document.getElementById('val-color');
+        const inputRoughness = document.getElementById('input-roughness');
+        const valRoughness = document.getElementById('val-roughness');
+        const inputMetalness = document.getElementById('input-metalness');
+        const valMetalness = document.getElementById('val-metalness');
+        const inputFresnel = document.getElementById('input-fresnel');
+        const valFresnel = document.getElementById('val-fresnel');
+
+        inputColor.addEventListener('input', (e) => valColor.innerText = e.target.value);
+        inputRoughness.addEventListener('input', (e) => valRoughness.innerText = parseFloat(e.target.value).toFixed(2));
+        inputMetalness.addEventListener('input', (e) => valMetalness.innerText = parseFloat(e.target.value).toFixed(2));
+        inputFresnel.addEventListener('input', (e) => valFresnel.innerText = parseFloat(e.target.value).toFixed(2));
+
+        function resetShaderDefaults() {
+            inputColor.value = '#00f0ff';
+            valColor.innerText = '#00f0ff';
+            inputRoughness.value = 0.3;
+            valRoughness.innerText = '0.30';
+            inputMetalness.value = 0.8;
+            valMetalness.innerText = '0.80';
+            inputFresnel.value = 0.5;
+            valFresnel.innerText = '0.50';
+            setShape('cube');
+        }
+
+        function renderShaderLoop(now) {
+            frameCount++;
+            if (now - lastFpsUpdate >= 1000) {
+                document.getElementById('fps-counter').innerText = 'FPS: ' + frameCount;
+                frameCount = 0;
+                lastFpsUpdate = now;
+            }
+
+            const w = shaderCanvas.width;
+            const h = shaderCanvas.height;
+            shaderCtx.clearRect(0, 0, w, h);
+
+            if (!isDragging) {
+                rotY += 0.01;
+            }
+
+            const baseColor = inputColor.value;
+            const roughness = parseFloat(inputRoughness.value);
+            const metalness = parseFloat(inputMetalness.value);
+            const fresnelVal = parseFloat(inputFresnel.value);
+
+            shaderCtx.save();
+            shaderCtx.translate(w / 2, h / 2);
+
+            // Draw grid backdrop
+            shaderCtx.strokeStyle = 'rgba(255,255,255,0.05)';
+            shaderCtx.lineWidth = 1;
+            for (let i = -w/2; i < w/2; i += 40) {
+                shaderCtx.beginPath();
+                shaderCtx.moveTo(i, -h/2);
+                shaderCtx.lineTo(i, h/2);
+                shaderCtx.stroke();
+            }
+
+            // Simple 3D projection rendering simulation
+            const size = Math.min(w, h) * 0.28;
+            
+            if (currentShape === 'cube') {
+                drawSimulatedCube(rotX, rotY, size, baseColor, roughness, metalness, fresnelVal);
+            } else if (currentShape === 'sphere') {
+                drawSimulatedSphere(rotX, rotY, size, baseColor, roughness, metalness, fresnelVal);
+            } else {
+                drawSimulatedTorus(rotX, rotY, size, baseColor, roughness, metalness, fresnelVal);
+            }
+
+            shaderCtx.restore();
+            requestAnimationFrame(renderShaderLoop);
+        }
+
+        function drawSimulatedCube(rx, ry, size, color, roughness, metalness, fresnel) {
+            // Basic wireframe/shaded cube faces
+            const vertices = [
+                [-1,-1,-1], [1,-1,-1], [1,1,-1], [-1,1,-1],
+                [-1,-1,1], [1,-1,1], [1,1,1], [-1,1,1]
+            ];
+            
+            // Project vertices
+            let projected = vertices.map(v => {
+                // Rotate Y
+                let x = v[0] * Math.cos(ry) - v[2] * Math.sin(ry);
+                let z = v[0] * Math.sin(ry) + v[2] * Math.cos(ry);
+                let y = v[1];
+                // Rotate X
+                let y2 = y * Math.cos(rx) - z * Math.sin(rx);
+                let z2 = y * Math.sin(rx) + z * Math.cos(rx);
+                
+                let scale = 250 / (250 + z2 + 300);
+                return { x: x * size * scale, y: y2 * size * scale, z: z2 };
+            });
+
+            const faces = [
+                [0,1,2,3], [4,5,6,7], [0,4,7,3], [1,5,6,2], [0,1,5,4], [3,2,6,7]
+            ];
+
+            faces.forEach((face, idx) => {
+                shaderCtx.beginPath();
+                shaderCtx.moveTo(projected[face[0]].x, projected[face[0]].y);
+                for (let i = 1; i < face.length; i++) {
+                    shaderCtx.lineTo(projected[face[i]].x, projected[face[i]].y);
+                }
+                shaderCtx.closePath();
+
+                // Shading calculation based on face index and PBR simulation
+                let shade = 0.4 + (idx * 0.1) + (metalness * 0.3);
+                shaderCtx.fillStyle = color;
+                shaderCtx.globalAlpha = Math.min(1, 0.5 + shade * (1 - roughness));
+                shaderCtx.fill();
+                shaderCtx.lineWidth = 2 + fresnel * 3;
+                shaderCtx.strokeStyle = '#ffffff';
+                shaderCtx.globalAlpha = 0.8;
+                shaderCtx.stroke();
+            });
+            shaderCtx.globalAlpha = 1.0;
+        }
+
+        function drawSimulatedSphere(rx, ry, size, color, roughness, metalness, fresnel) {
+            shaderCtx.beginPath();
+            shaderCtx.arc(0, 0, size, 0, Math.PI * 2);
+            let gradient = shaderCtx.createRadialGradient(-size*0.3, -size*0.3, size*0.1, 0, 0, size);
+            gradient.addColorStop(0, '#ffffff');
+            gradient.addColorStop(0.3, color);
+            gradient.addColorStop(1, '#050608');
+            shaderCtx.fillStyle = gradient;
+            shaderCtx.fill();
+
+            shaderCtx.lineWidth = 3 + fresnel * 4;
+            shaderCtx.strokeStyle = color;
+            shaderCtx.stroke();
+        }
+
+        function drawSimulatedTorus(rx, ry, size, color, roughness, metalness, fresnel) {
+            shaderCtx.save();
+            shaderCtx.rotate(ry);
+            shaderCtx.beginPath();
+            shaderCtx.ellipse(0, 0, size, size * 0.6, rx, 0, Math.PI * 2);
+            shaderCtx.lineWidth = size * 0.4;
+            let gradient = shaderCtx.createLinearGradient(-size, -size, size, size);
+            gradient.addColorStop(0, color);
+            gradient.addColorStop(1, '#121420');
+            shaderCtx.strokeStyle = gradient;
+            shaderCtx.stroke();
+            shaderCtx.restore();
+        }
+
+        requestAnimationFrame(renderShaderLoop);
+
+        // TAB 2: Palette Generator
+        function generateNewPalette() {
+            const container = document.getElementById('palette-container');
+            container.innerHTML = '';
+            
+            const baseHue = Math.floor(Math.random() * 360);
+            for (let i = 0; i < 5; i++) {
+                let hue = (baseHue + (i * 45)) % 360;
+                let saturation = 70 + Math.floor(Math.random() * 20);
+                let lightness = 40 + (i * 8);
+                let hex = hslToHex(hue, saturation, lightness);
+
+                const box = document.createElement('div');
+                box.className = 'glass-panel p-4 rounded-2xl flex flex-col items-center justify-between cursor-pointer hover:scale-105 transition-transform group border border-cyber-500/30';
+                box.innerHTML = `
+                    <div class="w-full aspect-square rounded-xl mb-3 shadow-inner" style="background-color: ${hex};"></div>
+                    <span class="text-xs font-mono font-bold text-gray-200 group-hover:text-cyber-accent">${hex}</span>
+                    <span class="text-[10px] font-mono text-gray-400 mt-1">H:${hue}°</span>
+                `;
+                box.onclick = () => {
+                    document.execCommand('copy'); // Fallback clipboard
+                    showCopyNotification(hex);
+                };
+                container.appendChild(box);
+            }
+        }
+
+        function hslToHex(h, s, l) {
+            l /= 100;
+            const a = s * Math.min(l, 1 - l) / 100;
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+        }
+
+        function showCopyNotification(hex) {
+            const note = document.getElementById('copy-notification');
+            note.innerText = `Skopiowano kolor ${hex} do schowka!`;
+            note.classList.remove('hidden');
+            setTimeout(() => note.classList.add('hidden'), 2000);
+        }
+
+        generateNewPalette();
+
+        // TAB 3: Perception Test
+        let perceptionScore = 0;
+        let perceptionTimer = 15;
+        let perceptionInterval = null;
+        let diffIndex = 0;
+
+        function startPerceptionGame() {
+            perceptionScore = 0;
+            perceptionTimer = 15;
+            document.getElementById('perception-score').innerText = perceptionScore;
+            document.getElementById('start-perception-btn').classList.add('hidden');
+            
+            if (perceptionInterval) clearInterval(perceptionInterval);
+            perceptionInterval = setInterval(() => {
+                perceptionTimer--;
+                document.getElementById('perception-timer').innerText = perceptionTimer;
+                if (perceptionTimer <= 0) {
+                    clearInterval(perceptionInterval);
+                    alert(`Koniec czasu! Twój wynik percepcji barw to: ${perceptionScore}`);
+                    document.getElementById('start-perception-btn').classList.remove('hidden');
+                    document.getElementById('start-perception-btn').innerText = 'Zagraj Ponownie';
+                }
+            }, 1000);
+
+            nextPerceptionRound();
+        }
+
+        function nextPerceptionRound() {
+            const board = document.getElementById('perception-board');
+            board.innerHTML = '';
+            
+            let gridCount = 16; // 4x4
+            diffIndex = Math.floor(Math.random() * gridCount);
+
+            let baseHue = Math.floor(Math.random() * 360);
+            let baseLight = 50 + Math.floor(Math.random() * 20);
+            let diffOffset = Math.max(2, 10 - Math.floor(perceptionScore * 0.8));
+
+            for (let i = 0; i < gridCount; i++) {
+                const tile = document.createElement('div');
+                tile.className = 'w-full aspect-square rounded-xl cursor-pointer hover:opacity-90 transition-transform active:scale-95';
+                
+                let isDiff = (i === diffIndex);
+                let l = isDiff ? baseLight + diffOffset : baseLight;
+                tile.style.backgroundColor = `hsl(${baseHue}, 70%, ${l}%)`;
+
+                tile.onclick = () => {
+                    if (perceptionTimer > 0) {
+                        if (isDiff) {
+                            perceptionScore++;
+                            document.getElementById('perception-score').innerText = perceptionScore;
+                            nextPerceptionRound();
+                        } else {
+                            perceptionTimer = Math.max(0, perceptionTimer - 2); // penalty
+                        }
+                    }
+                };
+                board.appendChild(tile);
+            }
+        }
+
+        // Gallery Filter & Lightbox
+        function filterGallery(cat) {
+            document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+                btn.className = 'gallery-filter-btn px-5 py-2 rounded-xl text-xs font-mono uppercase glass-panel text-gray-300 hover:text-white transition-all';
+            });
+            event.target.className = 'gallery-filter-btn px-5 py-2 rounded-xl text-xs font-mono uppercase bg-cyber-accent text-cyber-900 font-bold transition-all';
+
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                if (cat === 'all' || item.getAttribute('data-category') === cat) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function openLightbox(title, imgUrl, desc) {
+            document.getElementById('lightbox-title').innerText = title;
+            document.getElementById('lightbox-img').src = imgUrl;
+            document.getElementById('lightbox-desc').innerText = desc;
+            document.getElementById('lightbox').classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+        }
+
+        // Contact Form Submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            document.getElementById('contact-form').reset();
+            const successBox = document.getElementById('form-success');
+            successBox.classList.remove('hidden');
+            setTimeout(() => successBox.classList.add('hidden'), 5000);
+        }
+    </script>
+</body>
+</html>
